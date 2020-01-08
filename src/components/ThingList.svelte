@@ -1,6 +1,6 @@
 <script>
     import {link} from 'svelte-spa-router'
-    import {formatDate} from '../utils'
+    import {formatDate, formatTimeSince} from '../utils'
 
     export var things = null;
 </script>
@@ -12,7 +12,6 @@
             <th>Name</th>
             <th>Alias</th>
             <th>Type</th>
-            <th>Created</th>
             <th>Last Seen</th>
             <th>Enabled</th>
             <th>Organization</th>
@@ -24,8 +23,7 @@
             <td><a href="/thing/{thing.id}" use:link>{thing.name}</a></td>
             <td>{thing.alias}</td>
             <td>{thing.type}</td>
-            <td>{formatDate(thing.created)}</td>
-            <td>{formatDate(thing.last_seen)}</td>
+            <td>{formatTimeSince(thing.last_seen)}</td>
             <td>
             {#if thing.enabled}
                 <span class="icon has-text-success"><i class="fas fa-check-square"></i></span>

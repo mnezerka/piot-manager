@@ -1,13 +1,9 @@
 <script>
     import {link} from 'svelte-spa-router'
+    import {formatDate} from '../utils'
 
     export var users = null;
 
-    function formatDate(timeStamp) {
-        var userDate = new Date();
-        userDate.setTime(timeStamp * 1000)
-        return userDate.toUTCString();
-    }
 </script>
 
 {#if users}

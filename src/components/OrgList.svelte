@@ -9,7 +9,7 @@
 <table class="table">
     <thead>
         <tr>
-            <th>Email</th>
+            <th>Name</th>
             <th>Created</th>
         </tr>
     </thead>
