@@ -21,7 +21,7 @@
         error = false;
 
         try {
-            let data = await gql({query: "{things {id, name, alias, type, enabled, created, last_seen, org {name}}}"});
+            let data = await gql({query: "{things {id, name, alias, type, enabled, created, last_seen, parent {id, name}, org {name}, sensor {class}}}"});
             things = data.things;
         } catch(error) {
             error = 'Request failed (' + error + ')';

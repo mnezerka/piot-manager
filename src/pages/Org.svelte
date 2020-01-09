@@ -96,8 +96,6 @@ h2 { margin-top: 2rem; }
 
 {#if org}
 
-<h2 class="subtitle">Edit Organization</h2>
-
 <form on:submit|preventDefault={updateOrg}>
 
     <div class="field">

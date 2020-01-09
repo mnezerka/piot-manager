@@ -1,6 +1,8 @@
 <script>
     import {link} from 'svelte-spa-router'
     import {formatDate, formatTimeSince} from '../utils'
+    import SensorIcon from './SensorIcon.svelte';
+    import DeviceIcon from './DeviceIcon.svelte';
 
     export var things = null;
 </script>
@@ -10,6 +12,7 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Parent</th>
             <th>Alias</th>
             <th>Type</th>
             <th>Last Seen</th>
@@ -21,8 +24,21 @@
         {#each things as thing}
         <tr>
             <td><a href="/thing/{thing.id}" use:link>{thing.name}</a></td>
+            <td>
+                {#if thing.parent}
+                    <a href="/thing/{thing.parent.id}" use:link>{thing.parent.name}</a>
+                {:else}
+                    -
+                {/if}
+            </td>
             <td>{thing.alias}</td>
-            <td>{thing.type}</td>
+            <td>{thing.type}
+                {#if thing.type == "sensor" && thing.sensor}
+                    <SensorIcon sensorClass={thing.sensor.class}/>
+                {:else}
+                    <DeviceIcon />
+                {/if}
+            </td>
             <td>{formatTimeSince(thing.last_seen)}</td>
             <td>
             {#if thing.enabled}

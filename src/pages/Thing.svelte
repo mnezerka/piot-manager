@@ -17,6 +17,7 @@
     let orgsAssigned = [];
     let orgAdd = '';
     let orgId = null;
+    let enabled = null;
 
     onMount(() => {
         if (!$authenticated) { push("/login"); }
@@ -33,11 +34,12 @@
         error = null
 
         try {
-            let data = await gql({query: `{thing(id: "${params.id}") {id, name, alias, org {id}} orgs {id, name}}`});
+            let data = await gql({query: `{thing(id: "${params.id}") {id, name, type, alias, enabled, org {id}, sensor {class, measurement_topic}} orgs {id, name}}`});
             thing = data.thing;
             alias = thing.alias;
             orgId = thing.org ? thing.org.id : "";
             orgs = data.orgs;
+            enabled = thing.enabled;
             //orgsAssigned = user.orgs.map(o => o.id);
         } catch (e) {
             error = e;
@@ -51,9 +53,11 @@
         error = null;
         success = false;
 
+        console.log(enabled);
+
         try {
             let orgIdStr = orgId === "" ? "null" : `"${orgId}"`
-            let data = await gql({query: `mutation {updateThing(thing: {id: "${params.id}", alias: "${alias}", orgId: ${orgIdStr}}) {id}}`});
+            let data = await gql({query: `mutation {updateThing(thing: {id: "${params.id}", alias: "${alias}", orgId: ${orgIdStr}, enabled: ${enabled}}) {id}}`});
             success = 'Thing successfully updated'
         } catch(e) {
             error = e;
@@ -82,9 +86,22 @@ h2 { margin-top: 2rem; }
 
 {#if thing}
 
-<h2 class="subtitle">Edit Thing</h2>
-
 <form on:submit|preventDefault={updateThing}>
+
+    <div class="field">
+        <label class="label">Name</label>
+        <p>{thing.name}</p>
+    </div>
+
+    <div class="field">
+        <label class="label">Unique Id</label>
+        <p>{thing.id}</p>
+    </div>
+
+    <div class="field">
+        <label class="label">Type</label>
+        <p>{thing.type}</p>
+    </div>
 
     <div class="field">
         <label class="label">Alias</label>
@@ -108,10 +125,36 @@ h2 { margin-top: 2rem; }
     </div>
 
     <div class="field">
+        <label class="label">Enabled</label>
+        <div class="control">
+            <div class="select">
+                <select bind:value={enabled}>
+                    <option value="{true}">Yes</option>
+                    <option value="{false}">No</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="field">
         <p class="control">
             <button class="button is-success">Update</button>
         </p>
     </div>
+
+    {#if thing.type == "sensor" && thing.sensor}
+
+        <div class="field">
+            <label class="label">Class</label>
+            <p>{thing.sensor.class}</p>
+        </div>
+
+        <div class="field">
+            <label class="label">MQTT Measurement Topic</label>
+            <p>{thing.sensor.measurement_topic}</p>
+        </div>
+    {/if}
 
 </form>
 
