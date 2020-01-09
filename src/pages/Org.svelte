@@ -9,6 +9,10 @@
     export var params;
 
     let name = '';
+    let description = '';
+    let influxdb = '';
+    let influxdb_username = '';
+    let influxdb_password = '';
     let org = null;
     let error = null;
     let fetching = false;
@@ -29,9 +33,13 @@
         error = null
 
         try {
-            let data = await gql({query: `{org(id: "${params.id}") {id, name, created, users {id, email}}}`});
+            let data = await gql({query: `{org(id: "${params.id}") {id, name, description, created, users {id, email}, influxdb, influxdb_username, influxdb_password}}`});
             org = data.org;
             name = org.name;
+            description = org.description;
+            influxdb = org.influxdb;
+            influxdb_username = org.influxdb_username;
+            influxdb_password = org.influxdb_password;
         } catch (e) {
             error = e;
         }
@@ -50,7 +58,18 @@
         success = false;
 
         try {
-            let data = await gql({query: `mutation {updateOrg(org: {id: "${params.id}", name: "${name}"}) {id}}`});
+            let data = await gql({query: `
+                    mutation {
+                        updateOrg(org: {
+                            id: "${params.id}",
+                            name: "${name}",
+                            description: "${description}",
+                            influxdb: "${influxdb}",
+                            influxdb_username: "${influxdb_username}",
+                            influxdb_password: "${influxdb_password}"
+                         }) {id}
+                    }`});
+
             success = 'Organization successfully updated'
         } catch(e) {
             error = e;
@@ -101,6 +120,30 @@ h2 { margin-top: 2rem; }
     <div class="field">
         <p class="control">
             <input bind:value={name} class="input {name.length === 0 && "is-danger"}" placeholder="Organization name">
+        </p>
+    </div>
+
+    <div class="field">
+        <p class="control">
+            <textarea bind:value={description} class="textarea" placeholder="Organization description"/>
+        </p>
+    </div>
+
+    <div class="field">
+        <p class="control">
+            <input bind:value={influxdb} class="input" placeholder="Influx database name">
+        </p>
+    </div>
+
+    <div class="field">
+        <p class="control">
+            <input bind:value={influxdb_username} class="input" placeholder="Influx database username">
+        </p>
+    </div>
+
+    <div class="field">
+        <p class="control">
+            <input bind:value={influxdb_password} class="input" placeholder="Influx database password">
         </p>
     </div>
 
