@@ -16,6 +16,7 @@
             <th>Alias</th>
             <th>Type</th>
             <th>Last Seen</th>
+            <th>Value</th>
             <th>Enabled</th>
             <th>Organization</th>
         </tr>
@@ -32,7 +33,7 @@
                 {/if}
             </td>
             <td>{thing.alias}</td>
-            <td>{thing.type}
+            <td>
                 {#if thing.type == "sensor" && thing.sensor}
                     <SensorIcon sensorClass={thing.sensor.class}/>
                 {:else}
@@ -40,6 +41,16 @@
                 {/if}
             </td>
             <td>{formatTimeSince(thing.last_seen)}</td>
+
+            <td>
+                {#if thing.type == "sensor" && thing.sensor}
+                    {thing.sensor.value}
+                {:else}
+                    -
+                {/if}
+            </td>
+
+
             <td>
             {#if thing.enabled}
                 <span class="icon has-text-success"><i class="fas fa-check-square"></i></span>

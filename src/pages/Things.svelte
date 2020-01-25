@@ -21,13 +21,17 @@
         error = false;
 
         try {
-            let data = await gql({query: "{things {id, name, alias, type, enabled, created, last_seen, parent {id, name}, org {name}, sensor {class}}}"});
+            let data = await gql({query: "{things {id, name, alias, type, enabled, created, last_seen, parent {id, name}, org {name}, sensor {class, value, unit}}}"});
             things = data.things;
         } catch(error) {
             error = 'Request failed (' + error + ')';
         }
 
         fetching = false;
+    }
+
+    function onAdd() {
+        push('/thing-add');
     }
 
 </script>
@@ -43,5 +47,6 @@
         </div>
     {:else}
         <ThingList things={things}/>
+        <button class="button" on:click={onAdd}>Add</button>
     {/if}
 {/if}

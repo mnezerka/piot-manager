@@ -1,11 +1,15 @@
 <script>
     export let sensorClass = null;
 
-    console.log(sensorClass);
+    let iconName = '';
 
-    if (sensorClass == 'temeprature') {
-        console.log('temp');
+    if (sensorClass == 'temperature') {
+        iconName = 'fa-thermometer-half'
+    } else if (sensorClass == 'humidity') {
+        iconName = 'fa-bath'
+    } else if (sensorClass == 'pressure') {
+        iconName = 'fa-weight-hanging'
     }
 </script>
 
-<span class="fas fa-thermometer-half"></span>
+<span class="fas {iconName}" alt="{sensorClass}"></span>
