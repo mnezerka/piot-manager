@@ -11,8 +11,8 @@
     let name = '';
     let description = '';
     let influxdb = '';
-    let influxdb_username = '';
-    let influxdb_password = '';
+    let mqtt_username = '';
+    let mqtt_password = '';
     let org = null;
     let error = null;
     let fetching = false;
@@ -33,13 +33,26 @@
         error = null
 
         try {
-            let data = await gql({query: `{org(id: "${params.id}") {id, name, description, created, users {id, email}, influxdb, influxdb_username, influxdb_password}}`});
+            let data = await gql({query: `
+                {
+                    org(id: "${params.id}") {
+                        id,
+                        name,
+                        description,
+                        created,
+                        users {id, email},
+                        influxdb,
+                        mqtt_username,
+                        mqtt_password
+                    }
+                }`
+            });
             org = data.org;
             name = org.name;
             description = org.description;
             influxdb = org.influxdb;
-            influxdb_username = org.influxdb_username;
-            influxdb_password = org.influxdb_password;
+            mqtt_username = org.mqtt_username;
+            mqtt_password = org.mqtt_password;
         } catch (e) {
             error = e;
         }
@@ -65,8 +78,8 @@
                             name: "${name}",
                             description: "${description}",
                             influxdb: "${influxdb}",
-                            influxdb_username: "${influxdb_username}",
-                            influxdb_password: "${influxdb_password}"
+                            mqtt_username: "${mqtt_username}",
+                            mqtt_password: "${mqtt_password}"
                          }) {id}
                     }`});
 
@@ -118,32 +131,37 @@ h2 { margin-top: 2rem; }
 <form on:submit|preventDefault={updateOrg}>
 
     <div class="field">
+        <label class="label">Name</label>
         <p class="control">
             <input bind:value={name} class="input {name.length === 0 && "is-danger"}" placeholder="Organization name">
         </p>
     </div>
 
     <div class="field">
+        <label class="label">Description</label>
         <p class="control">
             <textarea bind:value={description} class="textarea" placeholder="Organization description"/>
         </p>
     </div>
 
     <div class="field">
+        <label class="label">Influx database name (optional)</label>
         <p class="control">
-            <input bind:value={influxdb} class="input" placeholder="Influx database name">
+            <input bind:value={influxdb} class="input">
         </p>
     </div>
 
     <div class="field">
+        <label class="label">MQTT user name (optional)</label>
         <p class="control">
-            <input bind:value={influxdb_username} class="input" placeholder="Influx database username">
+            <input bind:value={mqtt_username} class="input">
         </p>
     </div>
 
     <div class="field">
+        <label class="label">MQTT password (optional)</label>
         <p class="control">
-            <input bind:value={influxdb_password} class="input" placeholder="Influx database password">
+            <input bind:value={mqtt_password} class="input">
         </p>
     </div>
 
