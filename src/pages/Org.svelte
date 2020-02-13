@@ -11,6 +11,7 @@
     let name = '';
     let description = '';
     let influxdb = '';
+    let mysqldb = '';
     let mqtt_username = '';
     let mqtt_password = '';
     let org = null;
@@ -42,6 +43,7 @@
                         created,
                         users {id, email},
                         influxdb,
+                        mysqldb,
                         mqtt_username,
                         mqtt_password
                     }
@@ -51,6 +53,7 @@
             name = org.name;
             description = org.description;
             influxdb = org.influxdb;
+            mysqldb = org.mysqldb;
             mqtt_username = org.mqtt_username;
             mqtt_password = org.mqtt_password;
         } catch (e) {
@@ -78,6 +81,7 @@
                             name: "${name}",
                             description: "${description}",
                             influxdb: "${influxdb}",
+                            mysqldb: "${mysqldb}",
                             mqtt_username: "${mqtt_username}",
                             mqtt_password: "${mqtt_password}"
                          }) {id}
@@ -148,6 +152,13 @@ h2 { margin-top: 2rem; }
         <label class="label">Influx database name (optional)</label>
         <p class="control">
             <input bind:value={influxdb} class="input">
+        </p>
+    </div>
+
+    <div class="field">
+        <label class="label">Mysql database name (optional)</label>
+        <p class="control">
+            <input bind:value={mysqldb} class="input">
         </p>
     </div>
 

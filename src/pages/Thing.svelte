@@ -23,6 +23,7 @@
     let availabilityTopic = null;
     let telemetryTopic = null;
     let storeInfluxDb = null;
+    let storeMysqlDb = null;
     let sensorClass = null;
     let sensorMeasurementTopic = null;
     let sensorMeasurementValue = null;
@@ -61,8 +62,8 @@
                     availability_topic,
                     telemetry_topic,
                     telemetry,
-                    sensor {value, class, measurement_topic, measurement_value, store_influxdb},
-                    switch {state, state_topic, state_on, state_off, command_topic, command_on, command_off}
+                    sensor {value, class, measurement_topic, measurement_value, store_influxdb, store_mysqldb},
+                    switch {state, state_topic, state_on, state_off, command_topic, command_on, command_off, store_mysqldb}
                 }
                 orgs {id, name}
             }`});
@@ -76,6 +77,7 @@
             piotId = thing.piot_id;
             enabled = thing.enabled;
             storeInfluxDb = thing.sensor ? thing.sensor.store_influxdb : null;
+            storeMysqlDb = thing.sensor ? thing.sensor.store_mysqldb : null;
             sensorClass = thing.sensor ? thing.sensor.class : null;
             sensorMeasurementTopic = thing.sensor ? thing.sensor.measurement_topic: null;
             sensorMeasurementValue = thing.sensor ? thing.sensor.measurement_value: null;
@@ -135,6 +137,7 @@
                         id: "${params.id}",
                         class: "${sensorClass}",
                         store_influxdb: ${storeInfluxDb},
+                        store_mysqldb: ${storeMysqlDb},
                         measurement_topic: "${sensorMeasurementTopic}",
                         measurement_value: "${sensorMeasurementValue}"
                     }
@@ -159,6 +162,7 @@
                     data: {
                         id: "${params.id}",
                         store_influxdb: ${storeInfluxDb},
+                        store_mysqldb: ${storeMysqlDb},
                         state_topic: "${switchStateTopic}",
                         state_on: "${switchStateOn}",
                         state_off: "${switchStateOff}",
@@ -336,7 +340,7 @@ h2 { margin-top: 2rem; }
             </div>
 
             <div class="field">
-                <label class="label">Store to InfluxDB</label>
+                <label class="label">Store to Influx database</label>
                 <div class="control">
                     <div class="select">
                         <select bind:value={storeInfluxDb}>
@@ -346,6 +350,20 @@ h2 { margin-top: 2rem; }
                     </div>
                 </div>
             </div>
+
+            <div class="field">
+                <label class="label">Store to Mysql database</label>
+                <div class="control">
+                    <div class="select">
+                        <select bind:value={storeMysqlDb}>
+                            <option value="{true}">Yes</option>
+                            <option value="{false}">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
 
             <div class="field">
                 <p class="control">
@@ -415,10 +433,22 @@ h2 { margin-top: 2rem; }
             </div>
 
             <div class="field">
-                <label class="label">Store to InfluxDB</label>
+                <label class="label">Store to Influx database</label>
                 <div class="control">
                     <div class="select">
                         <select bind:value={storeInfluxDb}>
+                            <option value="{true}">Yes</option>
+                            <option value="{false}">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Store to Mysql database</label>
+                <div class="control">
+                    <div class="select">
+                        <select bind:value={storeMysqlDb}>
                             <option value="{true}">Yes</option>
                             <option value="{false}">No</option>
                         </select>
@@ -434,6 +464,5 @@ h2 { margin-top: 2rem; }
 
         </form>
     {/if}
-
 
 {/if}
