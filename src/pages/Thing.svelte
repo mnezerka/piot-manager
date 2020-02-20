@@ -150,6 +150,7 @@
                         alias: "${thing.alias}",
                         orgId: "${thing.org.id}",
                         enabled: ${thing.enabled},
+                        last_seen_interval: ${thing.last_seen_interval},
                         availability_topic: "${thing.availability_topic}",
                         telemetry_topic: "${thing.telemetry_topic}",
                         store_influxdb: ${thing.store_influxdb},

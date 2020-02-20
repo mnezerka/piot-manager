@@ -21,7 +21,13 @@
         error = false;
 
         try {
-            let data = await gql({query: "{things {id, name, alias, type, enabled, created, last_seen, parent {id, name}, org {name}, sensor {class, value, unit}}}"});
+            let data = await gql({query: `{things {
+                id, name, alias, type, enabled, created, last_seen, last_seen_interval,
+                store_mysqldb, store_influxdb,
+                parent {id, name},
+                org {name},
+                sensor {class, value, unit}}}
+                `});
             things = data.things;
         } catch(error) {
             error = 'Request failed (' + error + ')';
