@@ -3,6 +3,7 @@
     import {formatDate, formatTimeSince} from '../utils'
     import SensorIcon from './SensorIcon.svelte';
     import DeviceIcon from './DeviceIcon.svelte';
+    import StatusEnabled from './StatusEnabled.svelte';
 
     export var things = null;
 
@@ -31,12 +32,10 @@
 
 .unavailable .lastseen {
     color: #ff0000;
-    font-weight: bold;
 }
 
 .available .lastseen {
     color: #009900;
-    font-weight: bold;
 }
 
 </style>
@@ -89,33 +88,12 @@
                 {/if}
             </td>
 
-
-            <td>
-            {#if thing.enabled}
-                <span class="icon has-text-success"><i class="fas fa-check-square"></i></span>
-            {:else}
-                <span class="icon has-text-danger"><i class="fas fa-ban"></i></span>
-            {/if}
-            </td>
+            <td><StatusEnabled enabled={thing.enabled}/></td>
 
             <td>{#if thing.org}{thing.org.name}{/if}</td>
 
-            <td>
-            {#if thing.store_mysqldb}
-                <span class="icon has-text-success"><i class="fas fa-check-square"></i></span>
-            {:else}
-                <span class="icon has-text-danger"><i class="fas fa-ban"></i></span>
-            {/if}
-            </td>
-
-            <td>
-            {#if thing.store_influxdb}
-                <span class="icon has-text-success"><i class="fas fa-check-square"></i></span>
-            {:else}
-                <span class="icon has-text-danger"><i class="fas fa-ban"></i></span>
-            {/if}
-            </td>
-
+            <td><StatusEnabled enabled={thing.store_mysqldb}/></td>
+            <td><StatusEnabled enabled={thing.store_influxdb}/></td>
         </tr>
         {/each}
     </tbody>
