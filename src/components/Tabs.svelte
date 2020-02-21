@@ -14,6 +14,7 @@
 <div class="tabs">
     <ul>
     {#each tabs as tab}
+        <!-- svelte-ignore a11y-missing-attribute -->
         <li class="{tab.id === active ? "is-active" : ""}" on:click|preventDefault={() => onSelectItem(tab.id)}><a>{tab.label}</a></li>
     {/each}
   </ul>

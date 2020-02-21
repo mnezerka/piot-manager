@@ -37,6 +37,7 @@
         PIOT Manager
         </a>
 
+        <!-- svelte-ignore a11y-missing-attribute -->
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarMainMenu">
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>

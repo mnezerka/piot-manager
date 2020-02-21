@@ -11,6 +11,7 @@
 
 {#if thing}
 
+<!-- svelte-ignore a11y-missing-attribute -->
 <form on:submit|preventDefault={onFormSubmit}>
 
     <label class="label">MQTT Availability Topic</label>

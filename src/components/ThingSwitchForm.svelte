@@ -11,6 +11,7 @@
 
 {#if thing && thing.type == "switch" && thing.switch}
 
+<!-- svelte-ignore a11y-missing-attribute -->
 <form on:submit|preventDefault={onFormSubmit}>
 
     <div class="field">

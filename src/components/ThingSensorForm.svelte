@@ -35,6 +35,7 @@
     <label class="label">MQTT Measurement Topic</label>
     <div class="field has-addons">
         <p class="control">
+            <!-- svelte-ignore a11y-missing-attribute -->
             <a class="button is-static">org/{thing.org ? thing.org.name : "?"}/</a>
         </p>
         <p class="control">
