@@ -30,6 +30,10 @@
     background-color: #ffeeee;
 }
 
+.nowrap {
+    white-space: nowrap;
+}
+
 .unavailable .lastseen {
     color: #ff0000;
 }
@@ -69,7 +73,7 @@
                 {/if}
             </td>
 
-            <td>{thing.alias}</td>
+            <td class="nowrap">{thing.alias}</td>
 
             <td>
                 {#if thing.type == "sensor" && thing.sensor}
@@ -78,7 +82,7 @@
                     <DeviceIcon />
                 {/if}
             </td>
-            <td class="lastseen">{formatTimeSince(thing.last_seen)}</td>
+            <td class="lastseen nowrap">{formatTimeSince(thing.last_seen)}</td>
 
             <td>
                 {#if thing.type == "sensor" && thing.sensor}

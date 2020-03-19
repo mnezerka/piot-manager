@@ -8,6 +8,7 @@
     import Tabs from '../components/Tabs.svelte';
     import ThingGeneralForm from '../components/ThingGeneralForm.svelte';
     import ThingMqttForm from '../components/ThingMqttForm.svelte';
+    import ThingLocationForm from '../components/ThingLocationForm.svelte';
     import ThingStorageForm from '../components/ThingStorageForm.svelte';
     import ThingSensorForm from '../components/ThingSensorForm.svelte';
     import ThingSwitchForm from '../components/ThingSwitchForm.svelte';
@@ -24,6 +25,7 @@
     const tabs = [
         {id: 'general', label: 'General'},
         {id: 'storage', label: 'Storage'},
+        {id: 'location', label: 'Location'},
         {id: 'mqtt', label: 'MQTT'},
         {id: 'sensor', label: 'Sensor'},
         {id: 'switch', label: 'Switch'},
@@ -63,7 +65,17 @@
                     store_mysqldb_interval,
                     last_seen_interval,
                     sensor {value, class, measurement_topic, measurement_value},
-                    switch {state, state_topic, state_on, state_off, command_topic, command_on, command_off}
+                    switch {state, state_topic, state_on, state_off, command_topic, command_on, command_off},
+                    location_mqtt_topic,
+                    location_mqtt_lat_value,
+                    location_mqtt_lng_value,
+                    location_mqtt_sat_value,
+                    location_mqtt_ts_value,
+                    location_lat,
+                    location_lng,
+                    location_sat,
+                    location_ts,
+                    location_tracking
                 }
                 orgs {id, name}
             }`});
@@ -156,6 +168,14 @@
                         store_influxdb: ${thing.store_influxdb},
                         store_mysqldb: ${thing.store_mysqldb},
                         store_mysqldb_interval: ${thing.store_mysqldb_interval}
+                        location_lat: ${thing.location_lat},
+                        location_lng: ${thing.location_lng},
+                        location_tracking: ${thing.location_tracking},
+                        location_mqtt_topic: "${thing.location_mqtt_topic}",
+                        location_mqtt_lat_value: "${thing.location_mqtt_lat_value}",
+                        location_mqtt_lng_value: "${thing.location_mqtt_lng_value}",
+                        location_mqtt_sat_value: "${thing.location_mqtt_sat_value}",
+                        location_mqtt_ts_value: "${thing.location_mqtt_ts_value}",
                     }
                 ) {id}
             }`});
@@ -189,6 +209,10 @@ h2 { margin-top: 2rem; }
 
     {#if tab === 'mqtt'}
         <ThingMqttForm thing={thing} onSubmit={updateThingData} />
+    {/if}
+
+    {#if tab === 'location'}
+        <ThingLocationForm thing={thing} onSubmit={updateThingData} />
     {/if}
 
     {#if tab === 'storage'}
