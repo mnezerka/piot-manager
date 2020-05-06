@@ -7,6 +7,7 @@
     import {token, authenticated} from '../stores.js'
     import {push} from 'svelte-spa-router'
     import {API} from '../config'
+    import {fetch_user_profile} from '../api';
 
     let username = '';
     let password = '';
@@ -51,6 +52,14 @@
         } catch(error) {
             error = 'Login Request Failed (' + error + ')';
         }
+
+        // refetch user profile
+        try {
+            fetch_user_profile()
+        } catch(error) {
+            error = 'Request failed (' + error + ')';
+        }
+
     }
 </script>
 

@@ -5,6 +5,7 @@ import Org from './pages/Org.svelte'
 import OrgAdd from './pages/OrgAdd.svelte'
 import Users from './pages/Users.svelte'
 import User from './pages/User.svelte'
+import UserAdd from './pages/UserAdd.svelte'
 import Things from './pages/Things.svelte'
 import Thing from './pages/Thing.svelte'
 import ThingAdd from './pages/ThingAdd.svelte'
@@ -18,6 +19,7 @@ let routes = {
     '/org-add': OrgAdd,
     '/users': Users,
     '/user/:id': User,
+    '/user-add': UserAdd,
     '/things': Things,
     '/thing/:id': Thing,
     '/thing-add': ThingAdd,

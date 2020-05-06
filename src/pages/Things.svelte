@@ -4,6 +4,7 @@
     import {push} from 'svelte-spa-router'
     import {gql} from '../utils.js';
     import ThingList from '../components/ThingList.svelte';
+    import ErrorBar from '../components/ErrorBar.svelte';
 
     let error = null;
     let things = null;
@@ -12,7 +13,6 @@
     onMount(() => {
         if (!$authenticated) { push("/login"); }
         fetchThings();
-
     })
 
     async function fetchThings()
@@ -29,8 +29,8 @@
                 sensor {class, value, unit}}}
                 `});
             things = data.things;
-        } catch(error) {
-            error = 'Request failed (' + error + ')';
+        } catch(err) {
+            error = err
         }
 
         fetching = false;
@@ -49,7 +49,7 @@
 {:else}
     {#if error}
         <div class="notification is-danger">
-            {error}
+            <ErrorBar title="Things request failed" error={error}/>
         </div>
     {:else}
         <ThingList things={things}/>

@@ -8,7 +8,6 @@
     export var things = null;
 
     let now = Math.floor(Date.now() / 1000)
-    console.log(now)
 
     if (things) {
         things = things.filter(t => {

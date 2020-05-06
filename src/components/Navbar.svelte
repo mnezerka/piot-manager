@@ -1,7 +1,8 @@
 <script>
-    import {authenticated} from '../stores.js'
+    import {profile, authenticated} from '../stores'
     import {link} from 'svelte-spa-router'
-    import {profile} from '../stores'
+
+    export var on_org_change = null;
 
     document.addEventListener('DOMContentLoaded', () => {
 
@@ -28,6 +29,11 @@
         }
     });
 
+    function onOrgChange(org_id) {
+        console.log('org change', org_id);
+        on_org_change && on_org_change(org_id);
+    }
+
 </script>
 
 <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
@@ -47,23 +53,51 @@
 
     <div id="navbarMainMenu" class="navbar-menu">
         <div class="navbar-start">
-            {#if $authenticated}
-            <a class="navbar-item" href="/orgs" use:link>Organizations</a>
-            <a class="navbar-item" href="/users" use:link>Users</a>
+            {#if $profile}
+                {#if $profile.is_admin}
+            <a class="navbar-item has-text-primary" href="/orgs" use:link>Organizations</a>
+            <a class="navbar-item has-text-primary" href="/users" use:link>Users</a>
+                {/if}
             <a class="navbar-item" href="/things" use:link>Things</a>
             {/if}
         </div>
 
         <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
+
+            {#if $profile && $profile.orgs.length > 0}
+                {#if $profile.orgs.length > 1}
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            {$profile.orgs[$profile.org_ix].name}
+                        </a>
+
+                        <div class="navbar-dropdown is-right">
+                            {#each $profile.orgs as org}
+                                {#if org.id !== $profile.orgs[$profile.org_ix].id}
+                                    <a class="navbar-item" on:click|preventDefault={() => onOrgChange(org.id)}>{org.name}</a>
+                                {/if}
+                            {/each}
+                        </div>
+                    </div>
+                {:else}
+                    <div class="navbar-item">{$profile.orgs[$profile.org_ix].name}</div>
+                {/if}
+            {/if}
+
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    {#if $authenticated && $profile}{$profile.email}{:else}Anonymous{/if}
+                </a>
+                <div class="navbar-dropdown is-right">
                     {#if $authenticated}
-                    <a href="/signout" use:link class="button is-light">Sign out {#if $profile}{$profile.email}{/if}</a>
+                    <a class="navbar-item" href="/signout" use:link>Sign out</a>
                     {:else}
-                    <a href="/login" use:link class="button is-light">Log in</a>
+                    <a class="navbar-item" href="/login" use:link>Log in</a>
                     {/if}
                 </div>
             </div>
+
         </div>
 
     </div>

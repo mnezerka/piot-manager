@@ -30,6 +30,11 @@
         fetching = false;
 
     }
+
+    function onAdd() {
+        push('/user-add');
+    }
+
 </script>
 
 
@@ -44,5 +49,6 @@
         </div>
     {:else}
         <UserList users={users}/>
+        <button class="button" on:click={onAdd}>Add</button>
     {/if}
 {/if}

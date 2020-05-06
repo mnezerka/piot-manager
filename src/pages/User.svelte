@@ -9,6 +9,8 @@
     export var params;
 
     let email = '';
+    let password = '';
+    let isAdmin = true;
     let user = null;
     let error = null;
     let fetching = false;
@@ -32,9 +34,10 @@
         error = null
 
         try {
-            let data = await gql({query: `{user(id: "${params.id}") {id, email, created, orgs {id, name}} orgs {id, name}}`});
+            let data = await gql({query: `{user(id: "${params.id}") {id, email, is_admin, created, orgs {id, name}} orgs {id, name}}`});
             user = data.user;
             email = user.email;
+            isAdmin = user.is_admin;
             orgs = data.orgs;
             orgsAssigned = user.orgs.map(o => o.id);
         } catch (e) {
@@ -55,7 +58,11 @@
         success = false;
 
         try {
-            let data = await gql({query: `mutation {updateUser(user: {id: "${params.id}", email: "${email}"}) {id}}`});
+            let passwordParam = ''; 
+            if (password) {
+                passwordParam = `, password: "${password}"`;
+            }
+            let data = await gql({query: `mutation {updateUser(user: {id: "${params.id}", email: "${email}" ${passwordParam}, is_admin: ${isAdmin}}) {id}}`});
             success = 'User successfully updated'
         } catch(e) {
             error = e;
@@ -131,8 +138,21 @@ h2 { margin-top: 2rem; }
 
     <div class="field">
         <p class="control">
-            <input bind:value={email} class="input {email.length === 0 && "is-danger"}" placeholder="User email">
+            <input bind:value={email} class="input {email.length === 0 && "is-danger"}" placeholder="Email">
         </p>
+    </div>
+
+    <div class="field">
+        <p class="control">
+            <input bind:value={password} class="input }" placeholder="Type new password or leave blank">
+        </p>
+    </div>
+
+    <div class="field">
+        <label class="checkbox">
+            <input bind:checked={isAdmin} type="checkbox" />
+            Is Admin
+        </label>
     </div>
 
     <div class="field">

@@ -1,10 +1,11 @@
 <script>
-    import {token, authenticated} from '../stores.js'
+    import {profile, token, authenticated} from '../stores.js'
     import {link, push} from 'svelte-spa-router'
 
     localStorage.removeItem('token');
     $token = null;
     $authenticated = false;
+    $profile = null;
 </script>
 
 <div class="content">
