@@ -94,3 +94,11 @@ export function formatTimeSince(timeStamp) {
 
     return Math.floor(seconds) + " s";
 }
+
+export function jsonEscape(str) {
+    return str.replace(/\n/g, "\\\\n").replace(/\r/g, "\\\\r").replace(/\t/g, "\\\\t");
+}
+
+export function jsonUnescape(str) {
+    return str.replace(/\\n/g, "\n").replace(/\\r/g, "\r").replace(/\\t/g, "\t");
+}

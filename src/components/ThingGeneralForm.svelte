@@ -44,6 +44,13 @@
     </div>
 
     <div class="field">
+        <label class="label">Description</label>
+        <p class="control">
+            <textarea bind:value={thing.description} class="textarea"/>
+        </p>
+    </div>
+
+    <div class="field">
         <label class="label">Created</label>
         <p>{formatDate(thing.created)}</p>
     </div>

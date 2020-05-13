@@ -1,7 +1,7 @@
 <script>
     import {token, authenticated} from '../stores.js'
     import {push} from 'svelte-spa-router'
-    import {gql, formatDate} from '../utils.js';
+    import {gql, formatDate, jsonEscape, jsonUnescape} from '../utils.js';
     import {onMount} from 'svelte';
     import ErrorBar from '../components/ErrorBar.svelte';
     import TableButtonDelete from '../components/TableButtonDelete.svelte';
@@ -52,6 +52,7 @@
                     id,
                     piot_id,
                     name,
+                    description,
                     created,
                     type,
                     alias,
@@ -80,6 +81,7 @@
                 orgs {id, name}
             }`});
             thing = data.thing;
+            thing.description = jsonUnescape(thing.description);
             orgs = data.orgs;
 
         } catch (e) {
@@ -150,6 +152,8 @@
         error = null;
         success = false;
 
+        console.log(thing.description);
+
         try {
             thing.org.id = thing.org.id === "" ? "null" : thing.org.id
             let data = await gql({query: `mutation {
@@ -158,6 +162,7 @@
                         id: "${params.id}",
                         piotId: "${thing.piot_id}",
                         name: "${thing.name}",
+                        description: "${jsonEscape(thing.description)}",
                         type: "${thing.type}",
                         alias: "${thing.alias}",
                         orgId: "${thing.org.id}",
