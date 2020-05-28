@@ -42,6 +42,8 @@
 
 </script>
 
+<div class="container content">
+
 <h1 class="title">Things</h1>
 
 {#if fetching}
@@ -56,3 +58,5 @@
         <button class="button" on:click={onAdd}>Add</button>
     {/if}
 {/if}
+
+</div>

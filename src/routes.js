@@ -9,6 +9,7 @@ import UserAdd from './pages/UserAdd.svelte'
 import Things from './pages/Things.svelte'
 import Thing from './pages/Thing.svelte'
 import ThingAdd from './pages/ThingAdd.svelte'
+import Map from './pages/Map.svelte'
 import Login from './pages/Login.svelte'
 import Signout from './pages/Signout.svelte'
 
@@ -23,6 +24,7 @@ let routes = {
     '/things': Things,
     '/thing/:id': Thing,
     '/thing-add': ThingAdd,
+    '/map': Map,
     '/login': Login,
     '/signout': Signout,
 

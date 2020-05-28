@@ -2,6 +2,9 @@ import svelte from 'rollup-plugin-svelte';
 import resolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
+import postcss from 'rollup-plugin-postcss';
+import properties from 'postcss-custom-properties';
+import autoprefixer from 'autoprefixer';
 import { terser } from 'rollup-plugin-terser';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -18,12 +21,28 @@ export default {
         svelte({
             // enable run-time checks when not in production
             dev: !production,
+
             // we'll extract any component CSS out into
             // a separate file — better for performance
+            /*
             css: css => {
                 css.write('public/bundle.css');
             }
+            */
+            emitCss: true
         }),
+        postcss({
+            extract: true,
+            minimize: production,
+            sourceMap: false,
+            plugins: [
+                autoprefixer()
+/*                properties({
+                    importFrom: 'assets/global.css',
+                }),*/
+            ],
+        }),
+
 
         // If you have external dependencies installed from
         // npm, you'll most likely need these plugins. In
@@ -32,9 +51,13 @@ export default {
         // https://github.com/rollup/rollup-plugin-commonjs
         resolve({
             browser: true,
-            dedupe: importee => importee === 'svelte' || importee.startsWith('svelte/')
+            dedupe: ['svelte']
         }),
         commonjs(),
+
+        // In dev mode, call `npm run start` once
+        // the bundle has been generated
+        !production && serve(),
 
         // Watch the `public` directory and refresh the
         // browser on changes when not in production
@@ -48,3 +71,20 @@ export default {
         clearScreen: false
     }
 };
+
+function serve() {
+    let started = false;
+
+    return {
+        writeBundle() {
+            if (!started) {
+                started = true;
+
+                require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
+                    stdio: ['ignore', 'inherit', 'inherit'],
+                    shell: true
+                });
+            }
+        }
+    };
+}

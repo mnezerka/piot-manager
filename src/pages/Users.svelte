@@ -37,6 +37,7 @@
 
 </script>
 
+<div class="container content">
 
 <h1 class="title">Users</h1>
 
@@ -52,3 +53,5 @@
         <button class="button" on:click={onAdd}>Add</button>
     {/if}
 {/if}
+
+</div>

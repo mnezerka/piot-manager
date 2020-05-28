@@ -39,9 +39,14 @@
 
 </script>
 
-<Navbar on_org_change={on_org_change}/>
+{#if authenticating}
+    <span>Authenticating</span>
+{:else}
+    <Navbar on_org_change={on_org_change}/>
+    <Router {routes}/>
+{/if}
 
-<main class="piot-main">
+<!--<main class="piot-main">
     <div class="container">
         {#if authenticating}
         <span>Authenticating</span>
@@ -49,4 +54,4 @@
         <Router {routes}/>
         {/if}
     </div>
-</main>
+</main> -->

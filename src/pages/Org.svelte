@@ -11,6 +11,8 @@
     let name = '';
     let description = '';
     let influxdb = '';
+    let influxdb_username = '';
+    let influxdb_password = '';
     let mysqldb = '';
     let mqtt_username = '';
     let mqtt_password = '';
@@ -43,6 +45,8 @@
                         created,
                         users {id, email},
                         influxdb,
+                        influxdb_username,
+                        influxdb_password,
                         mysqldb,
                         mqtt_username,
                         mqtt_password
@@ -53,6 +57,8 @@
             name = org.name;
             description = org.description;
             influxdb = org.influxdb;
+            influxdb_username = org.influxdb_username;
+            influxdb_password = org.influxdb_password;
             mysqldb = org.mysqldb;
             mqtt_username = org.mqtt_username;
             mqtt_password = org.mqtt_password;
@@ -81,6 +87,8 @@
                             name: "${name}",
                             description: "${description}",
                             influxdb: "${influxdb}",
+                            influxdb_username: "${influxdb_username}",
+                            influxdb_password: "${influxdb_password}",
                             mysqldb: "${mysqldb}",
                             mqtt_username: "${mqtt_username}",
                             mqtt_password: "${mqtt_password}"
@@ -124,6 +132,8 @@ h2 { margin-top: 2rem; }
 .delete-button { text-align: right; }
 </style>
 
+<div class="container content">
+
 <h1 class="title">Organization</h1>
 
 <ErrorBar error={error}/>
@@ -152,6 +162,20 @@ h2 { margin-top: 2rem; }
         <label class="label">Influx database name (optional)</label>
         <p class="control">
             <input bind:value={influxdb} class="input">
+        </p>
+    </div>
+
+    <div class="field">
+        <label class="label">Influx database user name (optional)</label>
+        <p class="control">
+            <input bind:value={influxdb_username} class="input">
+        </p>
+    </div>
+
+    <div class="field">
+        <label class="label">Influx database password (optional)</label>
+        <p class="control">
+            <input bind:value={influxdb_password} class="input">
         </p>
     </div>
 
@@ -206,3 +230,5 @@ h2 { margin-top: 2rem; }
 </table>
 
 {/if}
+
+</div>

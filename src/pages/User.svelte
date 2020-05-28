@@ -124,6 +124,8 @@ h2 { margin-top: 2rem; }
 .delete-button { text-align: right; }
 </style>
 
+<div class="container content">
+
 <h1 class="title">User</h1>
 
 <ErrorBar error={error}/>
@@ -209,3 +211,5 @@ h2 { margin-top: 2rem; }
 </table>
 
 {/if}
+
+</div>

@@ -59,29 +59,26 @@
             <a class="navbar-item has-text-primary" href="/users" use:link>Users</a>
                 {/if}
             <a class="navbar-item" href="/things" use:link>Things</a>
+            <a class="navbar-item" href="/map" use:link>Map</a>
             {/if}
         </div>
 
         <div class="navbar-end">
 
-            {#if $profile && $profile.orgs.length > 0}
-                {#if $profile.orgs.length > 1}
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
-                            {$profile.orgs[$profile.org_ix].name}
-                        </a>
+            {#if $profile && $profile.orgs.length > 1}
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        {$profile.orgs[$profile.org_ix].name}
+                    </a>
 
-                        <div class="navbar-dropdown is-right">
-                            {#each $profile.orgs as org}
-                                {#if org.id !== $profile.orgs[$profile.org_ix].id}
-                                    <a class="navbar-item" on:click|preventDefault={() => onOrgChange(org.id)}>{org.name}</a>
-                                {/if}
-                            {/each}
-                        </div>
+                    <div class="navbar-dropdown is-right">
+                        {#each $profile.orgs as org}
+                            {#if org.id !== $profile.orgs[$profile.org_ix].id}
+                                <a class="navbar-item" on:click|preventDefault={() => onOrgChange(org.id)}>{org.name}</a>
+                            {/if}
+                        {/each}
                     </div>
-                {:else}
-                    <div class="navbar-item">{$profile.orgs[$profile.org_ix].name}</div>
-                {/if}
+                </div>
             {/if}
 
 

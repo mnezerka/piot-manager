@@ -43,6 +43,8 @@
 form { width: 24rem;}
 </style>
 
+<div class="container content">
+
 <h1 class="title">Add Thing</h1>
 
 {#if error}<div class="notification is-danger has-text-centered">{error}</div>{/if}
@@ -76,3 +78,4 @@ form { width: 24rem;}
 
 </form>
 
+</div>

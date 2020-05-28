@@ -12,7 +12,10 @@
     import ThingStorageForm from '../components/ThingStorageForm.svelte';
     import ThingSensorForm from '../components/ThingSensorForm.svelte';
     import ThingSwitchForm from '../components/ThingSwitchForm.svelte';
+    import ThingManageForm from '../components/ThingManageForm.svelte';
     import SmartTitle from '../components/SmartTitle.svelte';
+    import ModalYesNo from '../components/ModalYesNo.svelte';
+    import {thing_delete} from '../api';
 
     export var params;
 
@@ -21,6 +24,7 @@
     let fetching = false;
     let success = null;
     let orgs = [];
+    let state = null;
 
     const tabs = [
         {id: 'general', label: 'General'},
@@ -29,6 +33,7 @@
         {id: 'mqtt', label: 'MQTT'},
         {id: 'sensor', label: 'Sensor'},
         {id: 'switch', label: 'Switch'},
+        {id: 'manage', label: 'Manage'},
     ]
     let tab = 'general';
 
@@ -146,13 +151,10 @@
     }
 
     async function updateThingData(thingData) {
-        console.log("update thing data", thingData);
 
         fetching = true;
         error = null;
         success = false;
-
-        console.log(thing.description);
 
         try {
             thing.org.id = thing.org.id === "" ? "null" : thing.org.id
@@ -191,18 +193,38 @@
         fetching = false;
     }
 
+    async function onDeleteThing(thingData) {
+        state = 'thing_delete_confirm';
+    }
+
+    async function onDeleteThingConfirmed() {
+
+        try {
+            fetching = true;
+            error = null;
+
+            await thing_delete(thing.id);
+            push("/things");
+        } catch(error) {
+            error = 'Request failed (' + error + ')';
+        }
+        fetching = false;
+    }
+
 </script>
 
-<style>
-form { width: 24rem;}
-h2 { margin-top: 2rem; }
-.delete-button { text-align: right; }
-</style>
+<ModalYesNo
+    title="Confirmation"
+    message="Are you sure you want to delete thing?"
+    active={state === 'thing_delete_confirm'}
+    onYes={onDeleteThingConfirmed}
+    onNo={() => {state = null}} />
+
+<div class="container content">
 
 <SmartTitle title="Thing" subTitle={success}/>
 
 <ErrorBar error={error}/>
-
 
 {#if thing}
 
@@ -232,4 +254,10 @@ h2 { margin-top: 2rem; }
         <ThingSwitchForm thing={thing} onSubmit={updateThingSwitchData} />
     {/if}
 
+    {#if tab === 'manage'}
+        <ThingManageForm thing={thing} onDelete={onDeleteThing} />
+    {/if}
+
 {/if}
+
+</div>
