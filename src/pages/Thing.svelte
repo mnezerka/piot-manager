@@ -20,6 +20,7 @@
     export var params;
 
     let thing = null;
+    let thingTitle = null;
     let error = null;
     let fetching = false;
     let success = null;
@@ -86,6 +87,7 @@
                 orgs {id, name}
             }`});
             thing = data.thing;
+            thingTitle = thing.name;
             thing.description = jsonUnescape(thing.description);
             orgs = data.orgs;
 
@@ -186,7 +188,8 @@
                     }
                 ) {id}
             }`});
-            success = 'Thing successfully updated'
+            success = 'Thing successfully updated';
+            thingTitle = thing.name;
         } catch(e) {
             error = e;
         }
@@ -222,7 +225,7 @@
 
 <div class="container content">
 
-<SmartTitle title="Thing" subTitle={success}/>
+<SmartTitle title="{thingTitle ? thingTitle : 'Loading'}" subTitle={success}/>
 
 <ErrorBar error={error}/>
 
