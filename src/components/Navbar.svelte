@@ -57,6 +57,7 @@
                 {#if $profile.is_admin}
             <a class="navbar-item has-text-primary" href="/orgs" use:link>Organizations</a>
             <a class="navbar-item has-text-primary" href="/users" use:link>Users</a>
+            <a class="navbar-item has-text-primary" href="/thingsadmin" use:link>Things Admin</a>
                 {/if}
             <a class="navbar-item" href="/things" use:link>Things</a>
             <a class="navbar-item" href="/map" use:link>Map</a>
