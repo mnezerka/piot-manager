@@ -27,6 +27,7 @@
                     <option value="temperature">Temperature</option>
                     <option value="humidity">Humidity</option>
                     <option value="pressure">Pressure</option>
+                    <option value="distance">Distance</option>
                 </select>
             </div>
         </div>
