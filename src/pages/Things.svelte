@@ -23,7 +23,7 @@
         try {
             let data = await gql({query: `{things {
                 id, name, alias, type, enabled, created, last_seen, last_seen_interval,
-                store_mysqldb, store_influxdb,
+                store_mysqldb, store_influxdb, battery_level, battery_level_tracking,
                 parent {id, name},
                 org {name},
                 sensor {class, value, unit}}}

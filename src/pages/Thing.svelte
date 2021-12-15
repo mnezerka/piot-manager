@@ -8,6 +8,7 @@
     import Tabs from '../components/Tabs.svelte';
     import ThingGeneralForm from '../components/ThingGeneralForm.svelte';
     import ThingMqttForm from '../components/ThingMqttForm.svelte';
+    import ThingBatteryForm from '../components/ThingBatteryForm.svelte';
     import ThingLocationForm from '../components/ThingLocationForm.svelte';
     import ThingStorageForm from '../components/ThingStorageForm.svelte';
     import ThingSensorForm from '../components/ThingSensorForm.svelte';
@@ -34,6 +35,7 @@
         {id: 'mqtt', label: 'MQTT'},
         {id: 'sensor', label: 'Sensor'},
         {id: 'switch', label: 'Switch'},
+        {id: 'battery', label: 'Battery'},
         {id: 'manage', label: 'Manage'},
     ]
     let tab = 'general';
@@ -82,7 +84,10 @@
                     location_lng,
                     location_sat,
                     location_ts,
-                    location_tracking
+                    location_tracking,
+                    battery_level_tracking,
+                    battery_mqtt_topic,
+                    battery_mqtt_level_value
                 }
                 orgs {id, name}
             }`});
@@ -185,6 +190,9 @@
                         location_mqtt_lng_value: "${thing.location_mqtt_lng_value}",
                         location_mqtt_sat_value: "${thing.location_mqtt_sat_value}",
                         location_mqtt_ts_value: "${thing.location_mqtt_ts_value}",
+                        battery_level_tracking: ${thing.battery_level_tracking},
+                        battery_mqtt_topic: "${thing.battery_mqtt_topic}",
+                        battery_mqtt_level_value: "${thing.battery_mqtt_level_value}",
                     }
                 ) {id}
             }`});
@@ -231,7 +239,7 @@
 
 {#if thing}
 
-    <Tabs tabs={tabs} active={tab} onChange={onTabChange}/>
+    <Tabs tabs={tabs.filter((t) => !(["sensor", "switch"].includes(t.id) && t.id != thing.type) )} active={tab} onChange={onTabChange}/>
 
     {#if tab === 'general'}
         <ThingGeneralForm thing={thing} orgs={orgs} onSubmit={updateThingData} />
@@ -255,6 +263,10 @@
 
     {#if tab === 'switch'}
         <ThingSwitchForm thing={thing} onSubmit={updateThingSwitchData} />
+    {/if}
+
+    {#if tab === 'battery'}
+        <ThingBatteryForm thing={thing} onSubmit={updateThingData} />
     {/if}
 
     {#if tab === 'manage'}

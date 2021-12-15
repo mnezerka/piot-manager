@@ -1,8 +1,6 @@
 <script>
     import {link} from 'svelte-spa-router'
-    import {formatDate, formatTimeSince} from '../utils'
-    import SensorIcon from './SensorIcon.svelte';
-    import DeviceIcon from './DeviceIcon.svelte';
+    import {formatTimeSince, formatThingType} from '../utils'
     import StatusEnabled from './StatusEnabled.svelte';
 
     export var things = null;
@@ -57,6 +55,7 @@
             <th>Organization</th>
             <th>Mysql</th>
             <th>Influx</th>
+            <th>Bat</th>
         </tr>
     </thead>
     <tbody>
@@ -74,13 +73,7 @@
 
             <td class="nowrap">{thing.alias}</td>
 
-            <td>
-                {#if thing.type == "sensor" && thing.sensor}
-                    <SensorIcon sensorClass={thing.sensor.class}/>
-                {:else}
-                    <DeviceIcon />
-                {/if}
-            </td>
+            <td>{formatThingType(thing)}</td>
             <td class="lastseen nowrap">{formatTimeSince(thing.last_seen)}</td>
 
             <td>
@@ -97,6 +90,14 @@
 
             <td><StatusEnabled enabled={thing.store_mysqldb}/></td>
             <td><StatusEnabled enabled={thing.store_influxdb}/></td>
+
+            <td>
+                {#if thing.battery_level_tracking}
+                {thing.battery_level}%
+                {:else}
+                -
+                {/if}
+            </td>
         </tr>
         {/each}
     </tbody>

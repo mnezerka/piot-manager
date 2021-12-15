@@ -102,3 +102,14 @@ export function jsonEscape(str) {
 export function jsonUnescape(str) {
     return str.replace(/\\n/g, "\n").replace(/\\r/g, "\r").replace(/\\t/g, "\t");
 }
+
+export function formatThingType(thing) {
+
+    var result = thing.type
+
+    if (thing.type == "sensor") {
+        result = thing.sensor.class
+    }
+
+    return result;
+}
